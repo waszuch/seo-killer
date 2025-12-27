@@ -1,0 +1,75 @@
+{
+  "siteName": "Tech News Portal",
+  "domain": "localhost:3000",
+  "language": "pl",
+  "niche": "Technologia i AI",
+  "seedKeywords": [
+    "sztuczna inteligencja",
+    "programowanie",
+    "aplikacje mobilne",
+    "cyberbezpieczeństwo",
+    "cloud computing",
+    "web development",
+    "UI/UX design",
+    "blockchain",
+    "machine learning",
+    "internet rzeczy"
+  ],
+  "layout": {
+    "homepage": "portal",
+    "article": "standard",
+    "list": "grid"
+  },
+  "branding": {
+    "primaryColor": "#2563eb",
+    "secondaryColor": "#1e40af",
+    "accentColor": "#3b82f6",
+    "logoUrl": "/logo.svg",
+    "faviconUrl": "/favicon.ico"
+  },
+  "content": {
+    "articlesPerGeneration": 5,
+    "articleLength": "medium",
+    "writingStyle": "professional",
+    "generateFaq": true,
+    "faqQuestionsCount": 3,
+    "minInternalLinks": 2,
+    "maxInternalLinks": 4
+  },
+  "externalLinks": {
+    "enabled": true,
+    "allowedDomains": [
+      {
+        "domain": "wikipedia.org",
+        "anchors": [
+          "Dowiedz się więcej",
+          "Zobacz definicję",
+          "Czytaj dalej"
+        ]
+      },
+      {
+        "domain": "github.com",
+        "anchors": [
+          "Kod źródłowy",
+          "Repozytorium",
+          "Zobacz na GitHub"
+        ]
+      }
+    ],
+    "maxExternalLinksPerArticle": 1
+  },
+  "seo": {
+    "defaultMetaTitle": "{title} - {siteName}",
+    "defaultMetaDescription": "Odkryj najnowsze informacje na temat: {topic}",
+    "ogImageWidth": 1200,
+    "ogImageHeight": 630,
+    "twitterCard": "summary_large_image"
+  },
+  "generation": {
+    "batchSize": 3,
+    "autoGenerate": false,
+    "imageProvider": "unsplash",
+    "imageFallback": "placeholder"
+  }
+}
+
