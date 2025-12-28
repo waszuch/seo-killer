@@ -1,9 +1,24 @@
 import { getArticleBySlug } from '@/lib/articles';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
+import { generateArticleMetadata, generateArticleJsonLd } from '@/lib/seo';
+import { Metadata } from 'next';
 
 interface PageProps {
   params: Promise<{ slug: string }>;
+}
+
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const { slug } = await params;
+  const article = getArticleBySlug(slug);
+
+  if (!article) {
+    return {
+      title: 'Artykuł nie znaleziony',
+    };
+  }
+
+  return generateArticleMetadata(article);
 }
 
 export default async function ArticlePage({ params }: PageProps) {
@@ -14,8 +29,14 @@ export default async function ArticlePage({ params }: PageProps) {
     notFound();
   }
 
+  const jsonLd = generateArticleJsonLd(article);
+
   return (
     <div className="min-h-screen bg-gray-50">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <article className="container mx-auto px-4 py-12 max-w-4xl">
         <Link href="/" className="text-blue-600 hover:underline mb-6 inline-block">
           ← Powrót do strony głównej
