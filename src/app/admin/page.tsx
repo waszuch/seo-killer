@@ -170,6 +170,32 @@ export default function AdminPage() {
     }
   };
 
+  const handleLinkArticles = async () => {
+    setGenerating(true);
+    setMessage('Linkowanie artykułów...');
+    
+    try {
+      const response = await fetch('/api/articles/link', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ all: true })
+      });
+      
+      const data = await response.json();
+      
+      if (data.success) {
+        setMessage(`${data.message}`);
+        await loadTopics();
+      } else {
+        setMessage(`Błąd: ${data.error}`);
+      }
+    } catch (error) {
+      setMessage('Błąd podczas linkowania artykułów');
+    } finally {
+      setGenerating(false);
+    }
+  };
+
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'pending': return 'bg-yellow-100 text-yellow-800';
@@ -274,6 +300,21 @@ export default function AdminPage() {
                 Generuj 10
               </button>
             </div>
+          </div>
+
+          <div className="bg-white rounded-lg shadow p-6">
+            <h2 className="text-xl font-semibold mb-4">Linkowanie</h2>
+            <p className="text-gray-600 mb-4">
+              Automatycznie dodaj linki wewnętrzne i zewnętrzne do artykułów
+            </p>
+            
+            <button
+              onClick={handleLinkArticles}
+              disabled={generating}
+              className="bg-purple-600 text-white px-6 py-2 rounded-lg hover:bg-purple-700 disabled:bg-gray-400 disabled:cursor-not-allowed"
+            >
+              {generating ? 'Linkowanie...' : 'Przelinkuj wszystkie artykuły'}
+            </button>
           </div>
         </div>
 

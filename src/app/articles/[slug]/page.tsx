@@ -112,6 +112,51 @@ export default async function ArticlePage({ params }: PageProps) {
           </section>
         )}
 
+        {article.internalLinks && article.internalLinks.length > 0 && (
+          <section className="mt-12 bg-gray-50 rounded-lg p-6">
+            <h2 className="text-2xl font-bold mb-6 text-gray-900">
+              Zobacz także
+            </h2>
+            <div className="grid md:grid-cols-2 gap-4">
+              {article.internalLinks.map((link, index) => (
+                <Link
+                  key={index}
+                  href={`/articles/${link.slug}`}
+                  className="block p-4 bg-white rounded-lg border border-gray-200 hover:border-blue-500 hover:shadow-md transition-all"
+                >
+                  <h3 className="font-semibold text-gray-900 hover:text-blue-600">
+                    {link.targetTitle}
+                  </h3>
+                </Link>
+              ))}
+            </div>
+          </section>
+        )}
+
+        {article.externalLinks && article.externalLinks.length > 0 && (
+          <section className="mt-8 bg-blue-50 rounded-lg p-6">
+            <h3 className="text-lg font-semibold mb-4 text-gray-900">
+              Przydatne linki
+            </h3>
+            <div className="flex flex-wrap gap-3">
+              {article.externalLinks.map((link, index) => (
+                <a
+                  key={index}
+                  href={link.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 px-4 py-2 bg-white rounded-lg border border-blue-200 hover:border-blue-500 hover:shadow-md transition-all text-blue-600 hover:text-blue-700"
+                >
+                  {link.text}
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                  </svg>
+                </a>
+              ))}
+            </div>
+          </section>
+        )}
+
         <footer className="mt-12 pt-8 border-t border-gray-200">
           <p className="text-sm text-gray-500">
             Opublikowano: {new Date(article.publishedAt || article.createdAt).toLocaleDateString('pl-PL')}
