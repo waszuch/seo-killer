@@ -1,8 +1,12 @@
 import Image from "next/image";
+import Link from "next/link";
 import { getSiteConfig } from "@/lib/config";
+import { loadArticles } from "@/lib/articles";
 
 export default function Home() {
   const config = getSiteConfig();
+  const articlesDb = loadArticles();
+  const articles = articlesDb.articles.filter(a => a.status === 'generated' || a.status === 'published');
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -22,69 +26,68 @@ export default function Home() {
           <p className="text-xl text-gray-600 mb-2">
             {config.niche}
           </p>
-          <p className="text-sm text-gray-500">
-            Język: {config.language.toUpperCase()} | Layout: {config.layout.homepage}
-          </p>
         </div>
 
-        <div className="max-w-4xl mx-auto bg-white rounded-lg shadow-md p-8">
-          <h2 className="text-2xl font-semibold mb-6" style={{ color: config.branding.secondaryColor }}>
-            Etap 1: Konfiguracja zakończona
-          </h2>
-          
-          <div className="space-y-4">
-            <div className="border-l-4 pl-4" style={{ borderColor: config.branding.accentColor }}>
-              <h3 className="font-semibold text-lg mb-2">Seed Keywords ({config.seedKeywords.length})</h3>
-              <div className="flex flex-wrap gap-2">
-                {config.seedKeywords.map((keyword, index) => (
-                  <span
-                    key={index}
-                    className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm"
+        {articles.length === 0 ? (
+          <div className="max-w-4xl mx-auto bg-white rounded-lg shadow-md p-8 text-center">
+            <h2 className="text-2xl font-semibold mb-4">Brak artykułów</h2>
+            <p className="text-gray-600 mb-6">
+              Wygeneruj artykuły w panelu administracyjnym
+            </p>
+            <Link
+              href="/admin"
+              className="inline-block px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+            >
+              Przejdź do panelu admin
+            </Link>
+          </div>
+        ) : (
+          <>
+            <div className="max-w-6xl mx-auto mb-8">
+              <h2 className="text-3xl font-bold mb-6 text-gray-900">Najnowsze artykuły</h2>
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {articles.map((article) => (
+                  <Link
+                    key={article.id}
+                    href={`/articles/${article.slug}`}
+                    className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow overflow-hidden"
                   >
-                    {keyword}
-                  </span>
+                    <div className="p-6">
+                      <h3 className="text-xl font-semibold mb-3 text-gray-900 line-clamp-2">
+                        {article.meta.title}
+                      </h3>
+                      <p className="text-gray-600 mb-4 line-clamp-3">
+                        {article.lead}
+                      </p>
+                      <div className="flex flex-wrap gap-2 mb-3">
+                        {article.meta.keywords.slice(0, 2).map((keyword, index) => (
+                          <span
+                            key={index}
+                            className="px-2 py-1 bg-blue-100 text-blue-800 rounded text-xs"
+                          >
+                            {keyword}
+                          </span>
+                        ))}
+                      </div>
+                      <span className="text-blue-600 text-sm font-medium hover:underline">
+                        Czytaj więcej →
+                      </span>
+                    </div>
+                  </Link>
                 ))}
               </div>
             </div>
 
-            <div className="border-l-4 pl-4" style={{ borderColor: config.branding.accentColor }}>
-              <h3 className="font-semibold text-lg mb-2">Konfiguracja treści</h3>
-              <ul className="list-disc list-inside text-gray-700 space-y-1">
-                <li>Artykuły na generację: {config.content.articlesPerGeneration}</li>
-                <li>Długość artykułu: {config.content.articleLength}</li>
-                <li>Styl pisania: {config.content.writingStyle}</li>
-                <li>FAQ: {config.content.generateFaq ? 'Tak' : 'Nie'}</li>
-                <li>Linki wewnętrzne: {config.content.minInternalLinks}-{config.content.maxInternalLinks}</li>
-              </ul>
+            <div className="text-center mt-8">
+              <Link
+                href="/admin"
+                className="inline-block px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+              >
+                Panel administracyjny
+              </Link>
             </div>
-
-            <div className="border-l-4 pl-4" style={{ borderColor: config.branding.accentColor }}>
-              <h3 className="font-semibold text-lg mb-2">Linki zewnętrzne</h3>
-              <ul className="list-disc list-inside text-gray-700 space-y-1">
-                {config.externalLinks.allowedDomains.map((domain, index) => (
-                  <li key={index}>
-                    <strong>{domain.domain}</strong> ({domain.anchors.length} anchorów)
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            <div className="mt-8 p-4 bg-green-50 border border-green-200 rounded">
-              <p className="text-green-800">
-                Konfiguracja działa poprawnie. System odczytuje dane z <code className="bg-green-100 px-2 py-1 rounded">site.config.json</code>
-              </p>
-            </div>
-          </div>
-        </div>
-
-        <div className="text-center mt-8">
-          <a
-            href="/admin"
-            className="inline-block px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
-          >
-            Panel administracyjny
-          </a>
-        </div>
+          </>
+        )}
 
         <div className="text-center mt-12 text-gray-500 text-sm">
           <p>SeoKiller by ITMakeovers & Marcin W.</p>

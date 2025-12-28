@@ -8,18 +8,20 @@ if (!API_KEY) {
 
 const genAI = new GoogleGenerativeAI(API_KEY);
 
-export function getGeminiModel() {
+export function getGeminiModel(maxTokens: number = 2000) {
   return genAI.getGenerativeModel({ 
     model: 'models/gemini-2.5-flash',
     generationConfig: {
       temperature: 0.7,
-      maxOutputTokens: 1000,
+      maxOutputTokens: maxTokens,
+      topP: 0.95,
+      topK: 40,
     }
   });
 }
 
-export async function generateWithGemini(prompt: string): Promise<string> {
-  const model = getGeminiModel();
+export async function generateWithGemini(prompt: string, maxTokens?: number): Promise<string> {
+  const model = getGeminiModel(maxTokens);
   const result = await model.generateContent(prompt);
   const response = result.response;
   return response.text();

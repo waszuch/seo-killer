@@ -31,8 +31,8 @@
     "articlesPerGeneration": 5,
     "articleLength": "medium",
     "writingStyle": "professional",
-    "generateFaq": true,
-    "faqQuestionsCount": 3,
+    "generateFaq": false,
+    "faqQuestionsCount": 2,
     "minInternalLinks": 2,
     "maxInternalLinks": 4
   },
