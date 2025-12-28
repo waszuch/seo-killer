@@ -12,6 +12,17 @@ interface Topic {
   createdAt: string;
 }
 
+interface Article {
+  id: string;
+  slug: string;
+  status: string;
+  meta: {
+    title: string;
+  };
+  imageUrl: string;
+  createdAt: string;
+}
+
 interface TopicStats {
   total: number;
   pending: number;
@@ -23,6 +34,7 @@ interface TopicStats {
 
 export default function AdminPage() {
   const [topics, setTopics] = useState<Topic[]>([]);
+  const [articles, setArticles] = useState<Article[]>([]);
   const [stats, setStats] = useState<TopicStats | null>(null);
   const [loading, setLoading] = useState(false);
   const [generating, setGenerating] = useState(false);
@@ -32,14 +44,24 @@ export default function AdminPage() {
   const loadTopics = async () => {
     setLoading(true);
     try {
-      const response = await fetch('/api/topics');
-      const data = await response.json();
-      if (data.success) {
-        setTopics(data.topics);
-        setStats(data.stats);
+      const [topicsRes, articlesRes] = await Promise.all([
+        fetch('/api/topics'),
+        fetch('/api/articles')
+      ]);
+      
+      const topicsData = await topicsRes.json();
+      const articlesData = await articlesRes.json();
+      
+      if (topicsData.success) {
+        setTopics(topicsData.topics);
+        setStats(topicsData.stats);
+      }
+      
+      if (articlesData.success) {
+        setArticles(articlesData.articles);
       }
     } catch (error) {
-      setMessage('Błąd podczas wczytywania tematów');
+      setMessage('Błąd podczas wczytywania danych');
     } finally {
       setLoading(false);
     }
@@ -258,6 +280,53 @@ export default function AdminPage() {
         {message && (
           <div className={`mb-6 p-3 rounded ${message.includes('Błąd') ? 'bg-red-50 text-red-800' : 'bg-green-50 text-green-800'}`}>
             {message}
+          </div>
+        )}
+
+        {articles.length > 0 && (
+          <div className="bg-white rounded-lg shadow mb-8">
+            <div className="p-6 border-b">
+              <h2 className="text-xl font-semibold">Wygenerowane artykuły ({articles.length})</h2>
+            </div>
+            <div className="overflow-x-auto">
+              <table className="w-full">
+                <thead className="bg-gray-50">
+                  <tr>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Tytuł</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Obrazek</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Data</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Akcje</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-gray-200">
+                  {articles.map((article) => (
+                    <tr key={article.id} className="hover:bg-gray-50">
+                      <td className="px-6 py-4 text-sm text-gray-900">{article.meta.title}</td>
+                      <td className="px-6 py-4">
+                        {article.imageUrl ? (
+                          <img src={article.imageUrl} alt="" className="w-20 h-12 object-cover rounded" />
+                        ) : (
+                          <span className="text-xs text-gray-500">Brak obrazka</span>
+                        )}
+                      </td>
+                      <td className="px-6 py-4 text-sm text-gray-500">
+                        {new Date(article.createdAt).toLocaleDateString('pl-PL')}
+                      </td>
+                      <td className="px-6 py-4">
+                        <a
+                          href={`/articles/${article.slug}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-sm text-blue-600 hover:underline"
+                        >
+                          Zobacz
+                        </a>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </div>
         )}
 

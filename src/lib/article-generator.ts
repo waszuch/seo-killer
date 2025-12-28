@@ -125,6 +125,9 @@ export async function generateArticleFromTopic(
       config.content.faqQuestionsCount
     );
     
+    const { getImageForArticle } = await import('./images');
+    const imageData = await getImageForArticle(content.title, topic.keywords);
+
     const article: Article = {
       id: generateId(),
       slug: topic.slug,
@@ -140,8 +143,8 @@ export async function generateArticleFromTopic(
       faq: content.faq,
       internalLinks: [],
       externalLinks: [],
-      imageUrl: `/generated-images/${topic.slug}.jpg`,
-      imageAlt: content.title,
+      imageUrl: imageData.url,
+      imageAlt: imageData.alt,
       createdAt: new Date().toISOString(),
       publishedAt: new Date().toISOString()
     };

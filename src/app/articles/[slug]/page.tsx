@@ -21,6 +21,16 @@ export default async function ArticlePage({ params }: PageProps) {
           ← Powrót do strony głównej
         </Link>
 
+        {article.imageUrl && (
+          <div className="mb-8 rounded-lg overflow-hidden">
+            <img
+              src={article.imageUrl}
+              alt={article.imageAlt}
+              className="w-full h-auto max-h-96 object-cover"
+            />
+          </div>
+        )}
+
         <header className="mb-8">
           <h1 className="text-4xl font-bold mb-4 text-gray-900">
             {article.meta.title}

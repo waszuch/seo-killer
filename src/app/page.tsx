@@ -50,13 +50,22 @@ export default function Home() {
                   <Link
                     key={article.id}
                     href={`/articles/${article.slug}`}
-                    className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow overflow-hidden"
+                    className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow overflow-hidden flex flex-col"
                   >
-                    <div className="p-6">
+                    {article.imageUrl && (
+                      <div className="w-full h-48 overflow-hidden">
+                        <img
+                          src={article.imageUrl}
+                          alt={article.imageAlt}
+                          className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                        />
+                      </div>
+                    )}
+                    <div className="p-6 flex-1 flex flex-col">
                       <h3 className="text-xl font-semibold mb-3 text-gray-900 line-clamp-2">
                         {article.meta.title}
                       </h3>
-                      <p className="text-gray-600 mb-4 line-clamp-3">
+                      <p className="text-gray-600 mb-4 line-clamp-3 flex-1">
                         {article.lead}
                       </p>
                       <div className="flex flex-wrap gap-2 mb-3">
