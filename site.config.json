@@ -16,10 +16,10 @@
     "internet rzeczy"
   ],
   "layout": {
-    "homepage": "portal",
-    "article": "standard",
-    "list": "grid"
-  },
+  "homepage": "magazine",
+  "article": "standard",
+  "list": "masonry"
+},
   "branding": {
     "primaryColor": "#2563eb",
     "secondaryColor": "#1e40af",

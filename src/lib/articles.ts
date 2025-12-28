@@ -83,4 +83,22 @@ export function getPendingArticles(limit?: number): Article[] {
   return limit ? pending.slice(0, limit) : pending;
 }
 
+export function deleteArticle(slug: string): boolean {
+  const db = loadArticles();
+  const initialLength = db.articles.length;
+  db.articles = db.articles.filter(a => a.slug !== slug);
+  
+  if (db.articles.length < initialLength) {
+    saveArticles(db);
+    
+    const { updateTopicStatusBySlug } = require('./topics');
+    updateTopicStatusBySlug(slug, 'pending');
+    
+    return true;
+  }
+  
+  return false;
+}
+
+
 

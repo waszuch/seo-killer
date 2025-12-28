@@ -196,6 +196,31 @@ export default function AdminPage() {
     }
   };
 
+  const handleDeleteArticle = async (slug: string) => {
+    if (!confirm('Czy na pewno chcesz usunąć ten artykuł?')) {
+      return;
+    }
+
+    try {
+      const response = await fetch('/api/articles/delete', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ slug })
+      });
+      
+      const data = await response.json();
+      
+      if (data.success) {
+        setMessage('Artykuł usunięty pomyślnie');
+        await loadTopics();
+      } else {
+        setMessage(`Błąd: ${data.error}`);
+      }
+    } catch (error) {
+      setMessage('Błąd podczas usuwania artykułu');
+    }
+  };
+
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'pending': return 'bg-yellow-100 text-yellow-800';
@@ -354,14 +379,22 @@ export default function AdminPage() {
                         {new Date(article.createdAt).toLocaleDateString('pl-PL')}
                       </td>
                       <td className="px-6 py-4">
-                        <a
-                          href={`/articles/${article.slug}`}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-sm text-blue-600 hover:underline"
-                        >
-                          Zobacz
-                        </a>
+                        <div className="flex gap-2">
+                          <a
+                            href={`/articles/${article.slug}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-sm text-blue-600 hover:underline"
+                          >
+                            Zobacz
+                          </a>
+                          <button
+                            onClick={() => handleDeleteArticle(article.slug)}
+                            className="text-sm text-red-600 hover:underline"
+                          >
+                            Usuń
+                          </button>
+                        </div>
                       </td>
                     </tr>
                   ))}
@@ -437,7 +470,12 @@ export default function AdminPage() {
                           </div>
                         )}
                         {topic.status === 'generated' && (
-                          <span className="text-sm text-green-600">Gotowy</span>
+                          <button
+                            onClick={() => handleResetTopic(topic.id)}
+                            className="text-sm bg-gray-500 text-white px-3 py-1 rounded hover:bg-gray-600"
+                          >
+                            Resetuj
+                          </button>
                         )}
                         {topic.status === 'generating' && (
                           <span className="text-sm text-blue-600">Generowanie...</span>

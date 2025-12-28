@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getImageForArticle } from '@/lib/images';
-import { getArticleBySlug, loadArticles, saveArticles } from '@/lib/articles';
+import { deleteArticle } from '@/lib/articles';
 
 export async function POST(request: NextRequest) {
   try {
@@ -14,35 +13,21 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const article = getArticleBySlug(slug);
+    const success = deleteArticle(slug);
 
-    if (!article) {
+    if (!success) {
       return NextResponse.json(
         { success: false, error: 'Article not found' },
         { status: 404 }
       );
     }
 
-    const imageData = await getImageForArticle(
-      article.meta.title,
-      article.meta.keywords
-    );
-
-    const db = loadArticles();
-    const articleIndex = db.articles.findIndex(a => a.slug === slug);
-    
-    if (articleIndex !== -1) {
-      db.articles[articleIndex].imageUrl = imageData.url;
-      db.articles[articleIndex].imageAlt = imageData.alt;
-      saveArticles(db);
-    }
-
     return NextResponse.json({
       success: true,
-      image: imageData
+      message: 'Artykuł usunięty pomyślnie'
     });
   } catch (error) {
-    console.error('Error fetching image:', error);
+    console.error('Error deleting article:', error);
     return NextResponse.json(
       { 
         success: false, 
@@ -53,5 +38,4 @@ export async function POST(request: NextRequest) {
     );
   }
 }
-
 

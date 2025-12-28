@@ -82,9 +82,35 @@ export function updateTopicStatus(id: string, status: Topic['status'], error?: s
   
   if (topic) {
     topic.status = status;
-    if (error) topic.error = error;
+    if (error) {
+      topic.error = error;
+    } else {
+      delete topic.error;
+    }
     if (status === 'generated') {
       topic.generatedAt = new Date().toISOString();
+    } else if (status === 'pending') {
+      delete topic.generatedAt;
+    }
+    saveTopics(db);
+  }
+}
+
+export function updateTopicStatusBySlug(slug: string, status: Topic['status'], error?: string): void {
+  const db = loadTopics();
+  const topic = db.topics.find(t => t.slug === slug);
+  
+  if (topic) {
+    topic.status = status;
+    if (error) {
+      topic.error = error;
+    } else {
+      delete topic.error;
+    }
+    if (status === 'generated') {
+      topic.generatedAt = new Date().toISOString();
+    } else if (status === 'pending') {
+      delete topic.generatedAt;
     }
     saveTopics(db);
   }
@@ -107,6 +133,7 @@ export function getTopicStats() {
     error: db.topics.filter(t => t.status === 'error').length
   };
 }
+
 
 
 
