@@ -77,6 +77,15 @@ export default function Home() {
           </div>
         </div>
 
+        <div className="text-center mt-8">
+          <a
+            href="/admin"
+            className="inline-block px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+          >
+            Panel administracyjny
+          </a>
+        </div>
+
         <div className="text-center mt-12 text-gray-500 text-sm">
           <p>SeoKiller by ITMakeovers & Marcin W.</p>
         </div>
