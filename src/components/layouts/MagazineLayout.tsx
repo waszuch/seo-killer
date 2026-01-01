@@ -45,3 +45,4 @@ export function MagazineLayout({ articles, siteName, niche }: MagazineLayoutProp
   );
 }
 
+

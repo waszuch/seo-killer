@@ -24,3 +24,4 @@ export function BlogLayout({ articles, siteName, niche }: BlogLayoutProps) {
   );
 }
 
+

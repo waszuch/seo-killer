@@ -55,6 +55,10 @@ export interface GenerationConfig {
   imageFallback: 'placeholder' | 'none';
 }
 
+export interface AdminConfig {
+  enabled: boolean;
+}
+
 export interface SiteConfig {
   siteName: string;
   domain: string;
@@ -67,5 +71,6 @@ export interface SiteConfig {
   externalLinks: ExternalLinksConfig;
   seo: SeoConfig;
   generation: GenerationConfig;
+  admin: AdminConfig;
 }
 

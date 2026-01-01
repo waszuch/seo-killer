@@ -16,15 +16,23 @@ export default function Home() {
       return (
         <div className="max-w-4xl mx-auto bg-white rounded-lg shadow-md p-8 text-center">
           <h2 className="text-2xl font-semibold mb-4">Brak artykułów</h2>
-          <p className="text-gray-600 mb-6">
-            Wygeneruj artykuły w panelu administracyjnym
-          </p>
-          <Link
-            href="/admin"
-            className="inline-block px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
-          >
-            Przejdź do panelu admin
-          </Link>
+          {config.admin.enabled ? (
+            <>
+              <p className="text-gray-600 mb-6">
+                Wygeneruj artykuły w panelu administracyjnym
+              </p>
+              <Link
+                href="/admin"
+                className="inline-block px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+              >
+                Przejdź do panelu admin
+              </Link>
+            </>
+          ) : (
+            <p className="text-gray-600">
+              Strona jest w trakcie przygotowywania treści.
+            </p>
+          )}
         </div>
       );
     }
@@ -72,12 +80,14 @@ export default function Home() {
             >
               Zobacz wszystkie artykuły
             </Link>
-            <Link
-              href="/admin"
-              className="inline-block px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
-            >
-              Panel administracyjny
-            </Link>
+            {config.admin.enabled && (
+              <Link
+                href="/admin"
+                className="inline-block px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+              >
+                Panel administracyjny
+              </Link>
+            )}
           </div>
         )}
 

@@ -43,12 +43,14 @@ export default function ArticlesPage() {
             <p className="text-gray-600 mb-8">
               Nie znaleziono żadnych opublikowanych artykułów.
             </p>
-            <Link
-              href="/admin"
-              className="inline-block px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
-            >
-              Przejdź do panelu admin
-            </Link>
+            {config.admin.enabled && (
+              <Link
+                href="/admin"
+                className="inline-block px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+              >
+                Przejdź do panelu admin
+              </Link>
+            )}
           </div>
         ) : (
           renderLayout()
@@ -57,4 +59,5 @@ export default function ArticlesPage() {
     </div>
   );
 }
+
 

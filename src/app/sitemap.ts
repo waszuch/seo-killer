@@ -1,8 +1,9 @@
 import { MetadataRoute } from 'next';
 import { loadArticles } from '@/lib/articles';
-import { getSiteUrl } from '@/lib/config';
+import { getSiteUrl, getSiteConfig } from '@/lib/config';
 
 export default function sitemap(): MetadataRoute.Sitemap {
+  const config = getSiteConfig();
   const articlesDb = loadArticles();
   const articles = articlesDb.articles.filter(
     a => a.status === 'generated' || a.status === 'published'
@@ -15,21 +16,30 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.8,
   }));
 
-  return [
+  const baseEntries: MetadataRoute.Sitemap = [
     {
       url: getSiteUrl('/'),
       lastModified: new Date().toISOString(),
       changeFrequency: 'daily',
       priority: 1,
     },
-    {
+  ];
+
+  // Only include /admin in sitemap if it's enabled
+  if (config.admin.enabled) {
+    baseEntries.push({
       url: getSiteUrl('/admin'),
       lastModified: new Date().toISOString(),
       changeFrequency: 'weekly',
       priority: 0.3,
-    },
+    });
+  }
+
+  return [
+    ...baseEntries,
     ...articleEntries,
   ];
 }
+
 
 
