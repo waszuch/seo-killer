@@ -1,17 +1,19 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Inter, Crimson_Pro } from "next/font/google";
 import "./globals.css";
 import { generateSiteMetadata } from "@/lib/seo";
 import { getSiteConfig } from "@/lib/config";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
+const inter = Inter({
+  variable: "--font-inter",
+  subsets: ["latin", "latin-ext"],
+  display: "swap",
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
+const crimsonPro = Crimson_Pro({
+  variable: "--font-crimson",
+  subsets: ["latin", "latin-ext"],
+  display: "swap",
 });
 
 export const metadata: Metadata = generateSiteMetadata();
@@ -24,13 +26,11 @@ export default function RootLayout({
   const config = getSiteConfig();
   
   return (
-    <html lang={config.language}>
+    <html lang={config.language} className="dark">
       <head>
         <link rel="icon" href={config.branding.faviconUrl} />
       </head>
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+      <body className={`${inter.variable} ${crimsonPro.variable}`}>
         {children}
       </body>
     </html>

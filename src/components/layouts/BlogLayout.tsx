@@ -9,19 +9,24 @@ interface BlogLayoutProps {
 
 export function BlogLayout({ articles, siteName, niche }: BlogLayoutProps) {
   return (
-    <div className="max-w-3xl mx-auto">
-      <div className="text-center mb-12">
-        <h1 className="text-4xl font-bold mb-4 text-gray-900">{siteName}</h1>
-        <p className="text-xl text-gray-600">{niche}</p>
-      </div>
+    <div className="max-w-2xl mx-auto">
+      <header className="text-center mb-16 animate-fade-in">
+        <h1 className="text-4xl md:text-5xl font-serif font-medium mb-4 text-[var(--text-primary)]">
+          {siteName}
+        </h1>
+        <p className="text-lg text-[var(--text-secondary)]">
+          {niche}
+        </p>
+        <div className="mt-8 flex justify-center">
+          <div className="w-16 h-px bg-[var(--border-default)]" />
+        </div>
+      </header>
 
-      <div className="space-y-8">
-        {articles.map((article) => (
-          <ArticleCard key={article.id} article={article} variant="minimal" />
+      <div className="space-y-2">
+        {articles.map((article, index) => (
+          <ArticleCard key={article.id} article={article} variant="minimal" index={index} />
         ))}
       </div>
     </div>
   );
 }
-
-

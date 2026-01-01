@@ -49,14 +49,12 @@ export default async function ArticlePage({ params }: PageProps) {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
       {renderLayout()}
-    </div>
+    </>
   );
 }
-
-

@@ -6,47 +6,49 @@ interface MinimalArticleLayoutProps {
 }
 
 export function MinimalArticleLayout({ article }: MinimalArticleLayoutProps) {
+  const formattedDate = new Date(article.publishedAt || article.createdAt).toLocaleDateString('pl-PL', {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric'
+  });
+
   return (
-    <div className="min-h-screen bg-white">
-      <div className="container mx-auto px-4 py-16 max-w-3xl">
-        <nav className="mb-12">
-          <Link href="/" className="text-gray-600 hover:text-gray-900 transition-colors">
-            ← Strona główna
+    <div className="min-h-screen bg-[var(--bg-primary)]">
+      <div className="container mx-auto px-4 py-16 max-w-2xl">
+        <nav className="mb-16 animate-fade-in">
+          <Link 
+            href="/" 
+            className="text-sm text-[var(--text-muted)] hover:text-[var(--accent-secondary)] transition-colors"
+          >
+            ← Powrót
           </Link>
         </nav>
 
-        <article>
-          <header className="mb-12 text-center">
-            <div className="mb-6">
-              {article.meta.keywords.slice(0, 1).map((keyword, index) => (
-                <span
-                  key={index}
-                  className="text-sm uppercase tracking-wider text-blue-600 font-medium"
-                >
-                  {keyword}
-                </span>
-              ))}
-            </div>
+        <article className="animate-slide-up">
+          <header className="text-center mb-16">
+            <span className="text-xs font-medium uppercase tracking-widest text-[var(--accent-secondary)] mb-6 block">
+              {article.meta.keywords[0]}
+            </span>
 
-            <h1 className="text-5xl font-serif font-bold mb-8 text-gray-900 leading-tight">
+            <h1 className="text-3xl md:text-4xl lg:text-5xl font-serif font-medium mb-8 text-[var(--text-primary)] leading-tight">
               {article.meta.title}
             </h1>
             
-            <p className="text-xl text-gray-600 leading-relaxed font-light">
+            <p className="text-lg md:text-xl text-[var(--text-secondary)] leading-relaxed font-serif italic">
               {article.lead}
             </p>
 
-            <div className="mt-8 text-sm text-gray-400">
-              {new Date(article.publishedAt || article.createdAt).toLocaleDateString('pl-PL', {
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric'
-              })}
+            <div className="mt-10 text-sm text-[var(--text-muted)]">
+              {formattedDate}
+            </div>
+
+            <div className="mt-10 flex justify-center">
+              <div className="w-12 h-px bg-[var(--border-default)]" />
             </div>
           </header>
 
           {article.imageUrl && (
-            <figure className="mb-12">
+            <figure className="mb-16">
               <img
                 src={article.imageUrl}
                 alt={article.imageAlt}
@@ -55,19 +57,19 @@ export function MinimalArticleLayout({ article }: MinimalArticleLayoutProps) {
             </figure>
           )}
 
-          <div className="prose prose-lg prose-gray max-w-none">
+          <div className="prose-dark">
             {article.sections.map((section, index) => (
-              <section key={index} className="mb-12">
+              <section key={index} className="mb-14">
                 {section.level === 2 ? (
-                  <h2 className="text-3xl font-serif font-bold mb-6 text-gray-900">
+                  <h2 className="text-2xl font-serif font-medium mb-6 text-[var(--text-primary)] text-center">
                     {section.heading}
                   </h2>
                 ) : (
-                  <h3 className="text-2xl font-serif font-semibold mb-5 text-gray-800">
+                  <h3 className="text-xl font-serif font-medium mb-5 text-[var(--text-primary)]">
                     {section.heading}
                   </h3>
                 )}
-                <div className="text-gray-700 text-lg leading-relaxed whitespace-pre-line font-light">
+                <div className="text-[var(--text-secondary)] text-lg leading-relaxed whitespace-pre-line font-serif">
                   {section.content}
                 </div>
               </section>
@@ -75,17 +77,17 @@ export function MinimalArticleLayout({ article }: MinimalArticleLayoutProps) {
           </div>
 
           {article.faq && article.faq.length > 0 && (
-            <section className="mt-16 pt-12 border-t border-gray-200">
-              <h2 className="text-2xl font-serif font-bold mb-8 text-gray-900 text-center">
+            <section className="mt-20 pt-16 border-t border-[var(--border-subtle)]">
+              <h2 className="text-xl font-serif font-medium mb-10 text-[var(--text-primary)] text-center">
                 Pytania i odpowiedzi
               </h2>
-              <div className="space-y-8">
+              <div className="space-y-10">
                 {article.faq.map((item, index) => (
-                  <div key={index}>
-                    <h3 className="text-xl font-semibold mb-3 text-gray-900">
+                  <div key={index} className="text-center">
+                    <h3 className="text-lg font-medium mb-3 text-[var(--text-primary)]">
                       {item.question}
                     </h3>
-                    <p className="text-gray-600 leading-relaxed">
+                    <p className="text-[var(--text-secondary)] font-serif leading-relaxed">
                       {item.answer}
                     </p>
                   </div>
@@ -94,46 +96,47 @@ export function MinimalArticleLayout({ article }: MinimalArticleLayoutProps) {
             </section>
           )}
 
-          {(article.internalLinks && article.internalLinks.length > 0) && (
-            <section className="mt-16 pt-12 border-t border-gray-200">
-              <h2 className="text-xl font-semibold mb-6 text-gray-900 text-center">
+          {article.internalLinks && article.internalLinks.length > 0 && (
+            <section className="mt-20 pt-16 border-t border-[var(--border-subtle)]">
+              <h2 className="text-sm font-medium uppercase tracking-widest text-[var(--text-muted)] mb-8 text-center">
                 Przeczytaj również
               </h2>
-              <div className="space-y-4">
+              <div className="space-y-4 text-center">
                 {article.internalLinks.map((link, index) => (
                   <Link
                     key={index}
                     href={`/articles/${link.slug}`}
-                    className="block text-center py-3 hover:text-blue-600 transition-colors"
+                    className="block py-3 text-[var(--text-primary)] hover:text-[var(--accent-secondary)] transition-colors font-medium"
                   >
-                    <span className="font-medium">{link.targetTitle}</span>
+                    {link.targetTitle}
                   </Link>
                 ))}
               </div>
             </section>
           )}
-        </article>
 
-        {article.externalLinks && article.externalLinks.length > 0 && (
-          <footer className="mt-16 pt-8 border-t border-gray-200 text-center">
-            <p className="text-sm text-gray-500 mb-4">Źródła i dodatkowe informacje:</p>
-            <div className="flex flex-wrap justify-center gap-4">
-              {article.externalLinks.map((link, index) => (
-                <a
-                  key={index}
-                  href={link.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-sm text-blue-600 hover:underline"
-                >
-                  {link.text}
-                </a>
-              ))}
-            </div>
-          </footer>
-        )}
+          {article.externalLinks && article.externalLinks.length > 0 && (
+            <footer className="mt-20 pt-10 border-t border-[var(--border-subtle)] text-center">
+              <p className="text-xs text-[var(--text-muted)] uppercase tracking-wider mb-4">
+                Źródła
+              </p>
+              <div className="flex flex-wrap justify-center gap-4">
+                {article.externalLinks.map((link, index) => (
+                  <a
+                    key={index}
+                    href={link.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-sm text-[var(--accent-secondary)] hover:underline"
+                  >
+                    {link.text}
+                  </a>
+                ))}
+              </div>
+            </footer>
+          )}
+        </article>
       </div>
     </div>
   );
 }
-
