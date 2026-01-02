@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { revalidatePath } from 'next/cache';
 import { generateArticleFromTopic, generateMultipleArticles } from '@/lib/article-generator';
 import { getPendingTopics } from '@/lib/topics';
 
@@ -9,6 +10,11 @@ export async function POST(request: NextRequest) {
 
     if (topicSlug) {
       const article = await generateArticleFromTopic(topicSlug);
+      
+      revalidatePath('/');
+      revalidatePath('/articles');
+      revalidatePath(`/articles/${article.slug}`);
+      
       return NextResponse.json({
         success: true,
         article
@@ -17,20 +23,28 @@ export async function POST(request: NextRequest) {
     
     if (topicSlugs && Array.isArray(topicSlugs)) {
       const result = await generateMultipleArticles(topicSlugs);
-      return NextResponse.json({
-        success: result.failed === 0,
-        ...result
+      
+      revalidatePath('/');
+      revalidatePath('/articles');
+      result.articles.forEach(article => {
+        revalidatePath(`/articles/${article.slug}`);
       });
+      
+      return NextResponse.json(result);
     }
     
     if (count) {
       const pendingTopics = getPendingTopics(count);
       const slugs = pendingTopics.map(t => t.slug);
       const result = await generateMultipleArticles(slugs);
-      return NextResponse.json({
-        success: result.failed === 0,
-        ...result
+      
+      revalidatePath('/');
+      revalidatePath('/articles');
+      result.articles.forEach(article => {
+        revalidatePath(`/articles/${article.slug}`);
       });
+      
+      return NextResponse.json(result);
     }
 
     return NextResponse.json(
@@ -52,6 +66,7 @@ export async function POST(request: NextRequest) {
     );
   }
 }
+
 
 
 

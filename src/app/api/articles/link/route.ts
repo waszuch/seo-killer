@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { revalidatePath } from 'next/cache';
 import { updateArticleLinks, updateAllArticlesLinks } from '@/lib/linking';
+import { loadArticles } from '@/lib/articles';
 
 export async function POST(request: NextRequest) {
   try {
@@ -8,6 +10,14 @@ export async function POST(request: NextRequest) {
 
     if (all) {
       const result = updateAllArticlesLinks();
+      
+      const articlesDb = loadArticles();
+      articlesDb.articles.forEach(article => {
+        revalidatePath(`/articles/${article.slug}`);
+      });
+      revalidatePath('/');
+      revalidatePath('/articles');
+      
       return NextResponse.json({
         success: true,
         updated: result.updated,
@@ -32,6 +42,8 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    revalidatePath(`/articles/${slug}`);
+
     return NextResponse.json({
       success: true,
       message: 'Linki zaktualizowane pomyślnie'
@@ -48,6 +60,7 @@ export async function POST(request: NextRequest) {
     );
   }
 }
+
 
 
 

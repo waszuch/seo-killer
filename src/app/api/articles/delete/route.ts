@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { revalidatePath } from 'next/cache';
 import { deleteArticle } from '@/lib/articles';
 
 export async function POST(request: NextRequest) {
@@ -22,6 +23,10 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    revalidatePath('/');
+    revalidatePath('/articles');
+    revalidatePath(`/articles/${slug}`);
+
     return NextResponse.json({
       success: true,
       message: 'Artykuł usunięty pomyślnie'
@@ -38,6 +43,7 @@ export async function POST(request: NextRequest) {
     );
   }
 }
+
 
 
 

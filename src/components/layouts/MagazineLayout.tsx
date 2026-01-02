@@ -13,40 +13,44 @@ export function MagazineLayout({ articles, siteName, niche }: MagazineLayoutProp
   const remaining = rest.slice(2);
 
   return (
-    <div className="space-y-16">
+    <div className="space-y-20">
       {featured && (
-        <section className="animate-fade-in">
+        <section className="animate-fade-in-up">
           <ArticleCard article={featured} variant="large" index={0} />
         </section>
       )}
 
       {secondary.length > 0 && (
-        <section>
-          <div className="flex items-center gap-4 mb-8">
-            <span className="w-8 h-px bg-[var(--accent-primary)]" />
-            <h2 className="text-sm font-medium uppercase tracking-widest text-[var(--text-muted)]">
-              Polecane
-            </h2>
+        <section className="animate-fade-in-up stagger-2">
+          <div className="section-divider">
+            <div className="flex items-center gap-3">
+              <span className="decoration-line" />
+              <h2 className="section-title">
+                Polecane
+              </h2>
+            </div>
           </div>
           <div className="grid md:grid-cols-2 gap-6">
             {secondary.map((article, index) => (
-              <ArticleCard key={article.id} article={article} variant="horizontal" index={index} />
+              <ArticleCard key={article.id} article={article} variant="horizontal" index={index + 1} />
             ))}
           </div>
         </section>
       )}
 
       {remaining.length > 0 && (
-        <section>
-          <div className="flex items-center gap-4 mb-8">
-            <span className="w-8 h-px bg-[var(--accent-primary)]" />
-            <h2 className="text-sm font-medium uppercase tracking-widest text-[var(--text-muted)]">
-              Więcej artykułów
-            </h2>
+        <section className="animate-fade-in-up stagger-4">
+          <div className="section-divider">
+            <div className="flex items-center gap-3">
+              <span className="decoration-line" />
+              <h2 className="section-title">
+                Więcej artykułów
+              </h2>
+            </div>
           </div>
-          <div className="grid md:grid-cols-3 gap-6">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {remaining.map((article, index) => (
-              <ArticleCard key={article.id} article={article} index={index} />
+              <ArticleCard key={article.id} article={article} index={index + 3} />
             ))}
           </div>
         </section>

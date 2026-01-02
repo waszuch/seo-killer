@@ -25,7 +25,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
   ];
 
-  // Only include /admin in sitemap if it's enabled
+
   if (config.admin.enabled) {
     baseEntries.push({
       url: getSiteUrl('/admin'),

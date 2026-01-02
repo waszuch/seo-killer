@@ -1,19 +1,21 @@
 import type { Metadata } from "next";
-import { Inter, Crimson_Pro } from "next/font/google";
+import { Outfit, Syne } from "next/font/google";
 import "./globals.css";
 import { generateSiteMetadata } from "@/lib/seo";
 import { getSiteConfig } from "@/lib/config";
 
-const inter = Inter({
-  variable: "--font-inter",
+const outfit = Outfit({
+  variable: "--font-outfit",
   subsets: ["latin", "latin-ext"],
   display: "swap",
+  weight: ["300", "400", "500", "600", "700"],
 });
 
-const crimsonPro = Crimson_Pro({
-  variable: "--font-crimson",
+const syne = Syne({
+  variable: "--font-syne",
   subsets: ["latin", "latin-ext"],
   display: "swap",
+  weight: ["600", "700", "800"],
 });
 
 export const metadata: Metadata = generateSiteMetadata();
@@ -30,7 +32,7 @@ export default function RootLayout({
       <head>
         <link rel="icon" href={config.branding.faviconUrl} />
       </head>
-      <body className={`${inter.variable} ${crimsonPro.variable}`}>
+      <body className={`${outfit.variable} ${syne.variable}`}>
         {children}
       </body>
     </html>

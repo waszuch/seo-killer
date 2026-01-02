@@ -164,11 +164,12 @@ export async function generateArticleFromTopic(
 export async function generateMultipleArticles(
   topicSlugs: string[],
   batchSize: number = 3
-): Promise<{ success: number; failed: number; errors: string[] }> {
+): Promise<{ success: number; failed: number; errors: string[]; articles: Article[] }> {
   const result = {
     success: 0,
     failed: 0,
-    errors: [] as string[]
+    errors: [] as string[],
+    articles: [] as Article[]
   };
   
   for (let i = 0; i < topicSlugs.length; i += batchSize) {
@@ -176,8 +177,9 @@ export async function generateMultipleArticles(
     
     for (const slug of batch) {
       try {
-        await generateArticleFromTopic(slug);
+        const article = await generateArticleFromTopic(slug);
         result.success++;
+        result.articles.push(article);
         await new Promise(resolve => setTimeout(resolve, 2000));
       } catch (error) {
         result.failed++;

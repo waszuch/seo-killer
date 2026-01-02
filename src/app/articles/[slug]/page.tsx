@@ -1,4 +1,4 @@
-import { getArticleBySlug } from '@/lib/articles';
+import { getArticleBySlug, loadArticles } from '@/lib/articles';
 import { notFound } from 'next/navigation';
 import { generateArticleMetadata, generateArticleJsonLd } from '@/lib/seo';
 import { getSiteConfig } from '@/lib/config';
@@ -7,8 +7,21 @@ import { StandardArticleLayout } from '@/components/article-layouts/StandardArti
 import { WideArticleLayout } from '@/components/article-layouts/WideArticleLayout';
 import { MinimalArticleLayout } from '@/components/article-layouts/MinimalArticleLayout';
 
+export const revalidate = false;
+
 interface PageProps {
   params: Promise<{ slug: string }>;
+}
+
+export async function generateStaticParams() {
+  const articlesDb = loadArticles();
+  const publishedArticles = articlesDb.articles.filter(
+    (a) => a.status === 'generated' || a.status === 'published'
+  );
+  
+  return publishedArticles.map((article) => ({
+    slug: article.slug,
+  }));
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {

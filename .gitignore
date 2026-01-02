@@ -44,6 +44,7 @@ next-env.d.ts
 # IDE
 .vscode
 .idea
+.cursor
 *.swp
 *.swo
 *~
@@ -51,9 +52,7 @@ next-env.d.ts
 # Generated content (articles and data)
 /data/articles/*.json
 /data/topics/*.json
-/public/generated-images/
 
 # Keep the directory structure but ignore generated files
 !data/articles/.gitkeep
 !data/topics/.gitkeep
-!public/generated-images/.gitkeep
