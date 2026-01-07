@@ -17,8 +17,8 @@
   ],
   "layout": {
   "homepage": "magazine",
-  "article": "minimal",
-  "list": "masonry"
+  "article": "standard",
+  "list": "grid"
 },
   "branding": {
     "primaryColor": "#3b82f6",

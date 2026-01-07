@@ -1,133 +1,112 @@
 # SeoKiller
 
-Cloneable Next.js repository for quickly deploying SEO-optimized content portals with automatic content generation.
+AI-powered SEO content generation platform with automatic topic creation, article writing, and intelligent internal linking. Built with Next.js 16, TypeScript, Gemini AI, and Tailwind CSS.
 
-## Quick Start
+## Features
 
-1. Clone the repository
-2. Install dependencies:
-   ```bash
-   pnpm install
-   ```
+- **AI Content Generation** - Generate high-quality articles using Google Gemini AI
+- **Smart Topic System** - Automatically generate relevant topics from seed keywords
+- **Intelligent Internal Linking** - Automatic linking between related articles with contextual anchors
+- **Multiple Layout Options** - Portal, Magazine, and Blog homepage styles
+- **Flexible Article Layouts** - Standard, Wide, and Minimal reading experiences
+- **Image Integration** - Automatic image fetching from Unsplash with AI-powered descriptions
+- **SEO Optimized** - Auto-generated meta tags, sitemaps, and robots.txt
+- **Tag System** - Automatic tagging and tag-based article filtering
+- **Admin Panel** - Intuitive dashboard for content management
+- **ISR & Edge Caching** - Lightning-fast page loads with Incremental Static Regeneration
+- **Fully Responsive** - Beautiful design across all devices
+- **Dark Theme** - Modern Elegant Midnight Emerald color scheme
 
-3. Create `.env` file with your API keys:
-   ```env
-   GEMINI_API_KEY=your_gemini_api_key_here
-   UNSPLASH_ACCESS_KEY=your_unsplash_key_here
-   ```
+## Development
 
-4. Run development server:
-   ```bash
-   pnpm dev
-   ```
+Create `.env` file:
+```env
+GEMINI_API_KEY=your_gemini_api_key_here
+UNSPLASH_ACCESS_KEY=your_unsplash_key_here
+```
 
-5. Open admin panel: `http://localhost:3000/admin`
+Install and run:
+```bash
+pnpm install
+pnpm dev
+```
+
+Open [http://localhost:3000](http://localhost:3000)
+
+## Build
+
+```bash
+pnpm build
+pnpm start
+```
 
 ## Configuration
 
 Edit `site.config.json` to customize your portal:
 
-- **siteName, domain, niche** - basic site info
-- **seedKeywords** - keywords for topic generation
-- **layout** - choose homepage/article/list layouts
-- **branding** - colors, logo, favicon
-- **admin.enabled** - enable/disable admin panel
+```json
+{
+  "siteName": "Your Site Name",
+  "niche": "Your Niche",
+  "seedKeywords": ["keyword1", "keyword2"],
+  "layout": {
+    "homepage": "magazine",
+    "article": "standard",
+    "list": "grid"
+  },
+  "admin": {
+    "enabled": true
+  }
+}
+```
 
-## Workflow for Production
+## Workflow
 
-1. **Generate content locally:**
-   - Set `"admin": { "enabled": true }` in `site.config.json`
-   - Run `pnpm dev`
-   - Open `/admin` and generate topics and articles
-   - Generate links between articles
+### 1. Generate Content
+- Enable admin panel in `site.config.json`
+- Visit `/admin` and generate topics
+- Generate articles from topics
+- Create internal links between articles
 
-2. **Deploy to production:**
-   - Set `"admin": { "enabled": false }` in `site.config.json`
-   - Commit changes: `git commit -am "feat: generated content for [niche]"`
-   - Push to GitHub
-   - Deploy to Vercel
+### 2. Deploy
+- Disable admin panel for production
+- Push to GitHub
+- Deploy to Vercel
 
-3. **Result:**
-   - Portal is live with generated content
-   - Admin panel is disabled and inaccessible
+### 3. Result
+- SEO-optimized portal with AI-generated content
+- Automatic sitemaps and meta tags
+- Fast loading with edge caching
 
 ## Available Layouts
 
 ### Homepage
-- **portal** - classic news portal with hero
-- **magazine** - magazine-style with featured sections
-- **blog** - minimalist single-column blog
+- **Portal** - Classic news portal with hero section
+- **Magazine** - Featured articles with grid layout
+- **Blog** - Minimalist single-column design
 
 ### Article Page
-- **standard** - classic article with sidebar
-- **wide** - full-width modern layout
-- **minimal** - distraction-free reading
+- **Standard** - Classic layout with sidebar
+- **Wide** - Full-width modern layout
+- **Minimal** - Distraction-free reading
 
 ### List/Tag Pages
-- **grid** - card-based grid
-- **list** - vertical list with horizontal cards
-- **masonry** - Pinterest-style masonry
-
-## Performance Optimizations
-
-### Image Optimization
-
-All images use Next.js Image Component with automatic optimization:
-
-- **Format conversion**: AVIF → WebP → JPEG (automatic)
-- **Responsive sizing**: Different sizes for different devices
-- **Lazy loading**: Images load only when visible
-- **Priority loading**: Hero images load immediately
-- **CDN caching**: Optimized images on Vercel Edge Network
-
-**Results:**
-- 80-90% bandwidth reduction
-- 10-50ms image load time
-- Automatic WebP/AVIF support
-- Perfect Lighthouse scores
-
-### Incremental Static Regeneration (ISR)
-
-The project uses **ISR** for optimal page performance:
-
-### How it works:
-
-- **Article pages** - Static, never auto-revalidate, only on-demand after edit
-- **Homepage** - Revalidates every 5 minutes (shows fresh content)
-- **Articles list** - Revalidates every 5 minutes
-- **Admin panel** - Always dynamic (never cached)
-
-### Benefits:
-
-- First load: 10-50ms (served from CDN)
-- Global Edge Network (75+ locations)
-- Zero server load for repeat visits
-- Instant updates with on-demand revalidation
-
-### On-Demand Revalidation:
-
-When you generate/delete/link articles, the system automatically invalidates cache for:
-- Homepage
-- Articles list page
-- Specific article pages
-
-This means changes are reflected immediately without waiting for revalidation interval.
+- **Grid** - Card-based responsive grid
+- **List** - Horizontal cards layout
+- **Masonry** - Pinterest-style layout
 
 ## Tech Stack
 
-- Next.js 14+ (App Router with ISR)
-- TypeScript
-- Tailwind CSS
-- Gemini AI (content generation)
-- Unsplash API (images)
-
-## License
-
-MIT
+- **Next.js 16** (App Router, ISR, Edge Runtime)
+- **TypeScript**
+- **Tailwind CSS 4**
+- **Google Gemini AI** (Content generation)
+- **Unsplash API** (Image sourcing)
+- **React 19**
 
 ---
 
-Built with ❤️ by ITMakeovers
+**Built by [ITMakeovers](https://github.com/waszuch) & Marcin Waszewski**
 
 
 
